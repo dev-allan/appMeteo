@@ -2,3 +2,34 @@ body{
     background-color: bisque;
     margin : 0px;
 }
+
+h1{
+    text-align: center;
+}
+
+#chooseLocation{
+    margin: 0 auto;
+    width: 300px;
+}
+
+#displayMeteo{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.card{
+    background-color: blueviolet;
+    margin: 15px;
+    padding : 10px;
+    border : solid 2px;
+    border-radius: 5px;
+}
+
+.cardHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
