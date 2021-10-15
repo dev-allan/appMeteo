@@ -7,27 +7,27 @@ let body = document.querySelector("body");
 searchInput.setAttribute("value", "");
 
 /**
- * Fonction de formatage de la date
+ * Fonction de formatage de la date qui retourne la date au format Jour + heure
  * @param {*} value 
- * @returns {retourne une date avec la date du jour et l'heure}
+ * @returns
  */
 const formattedDate = (dateValue) => {
     //Objet permettant d'afficher les jours en français pour le formatage de la date
     let dataDay = {
-        "0" : "dimanche",
-        "1" : "lundi",
-        "2" : "mardi",
-        "3" : "mercredi",
-        "4" : "jeudi",
-        "5" : "vendredi",
-        "6" : "samedi"
+        "0" : "Dimanche",
+        "1" : "Lundi",
+        "2" : "Mardi",
+        "3" : "Mercredi",
+        "4" : "Jeudi",
+        "5" : "Vendredi",
+        "6" : "Samedi"
     }
     let date = new Date(dateValue)
     let day = date.getDay();
     let hours = date.getHours();
     let minutes = "0" + date.getMinutes();
-    
-    return dataDay[day] + " à " + hours + 'h' + minutes.substr(-2);
+    let formatage = dataDay[day] + " à " + hours + 'h' + minutes.substr(-2);
+    return formatage;
 }
 
 /**
@@ -40,8 +40,9 @@ const formattedDate = (dateValue) => {
  * @param {*} temp 
  * @returns 
  */
+
 const blockHtml = (city, icon, date, meteo, humidity, temp) => {
-    //JSON permettant de traduire les data obtenu de openWeather
+    //JSON permettant de traduire les data météo obtenu de openWeather
     let dataMeteoTraduction = {
         "Clouds" : "Nuageux",
         "Clear" : "Dégagé",
@@ -55,7 +56,7 @@ const blockHtml = (city, icon, date, meteo, humidity, temp) => {
             <h3>${city}</h3>
             <img src="http://openweathermap.org/img/wn/${icon}@2x.png" alt="Icone météo">
             </div>
-            <p>Date : ${formattedDate(date)}</p>
+            <p>${formattedDate(date)}</p>
             <p>Météo : ${dataMeteoTraduction[meteo]}</p>
             <p>Humidité : ${humidity} %</p>
             <p>Température : ${Math.round(temp - 273.15)}°C</p>`
@@ -72,6 +73,7 @@ const askMeteo = (city) => {
         if(response.ok) {
             return response.json();
         } else if(response.status === 404){
+            //On créé un paragraphe afin d'afficher une erreur lorsque'il n'y a aucun résultat'
             let error = document.createElement('p');
             error.setAttribute("id", "error");
             header.appendChild(error);
@@ -79,10 +81,11 @@ const askMeteo = (city) => {
         }
     })
     .then(function(value){
+        //On recrée un paragraphe portant l'id error afin d'éviter une erreur lors de la suppression de cet élément pendant l'évènement clic
         let error = document.createElement('p');
         error.setAttribute("id", "error");
         header.appendChild(error);
-        error.innerHTML=``
+        error.innerHTML=``;
         const displayR = document.createElement("section");
         displayR.setAttribute("id", "displayMeteo");
         body.appendChild(displayR);
@@ -93,10 +96,10 @@ const askMeteo = (city) => {
             let city = value.city.name;
             let icon = value.list[i].weather[0].icon;
             let date = value.list[i].dt_txt;
-            let meteo = value.list[i].weather[0].main
-            let humidity = value.list[i].main.humidity
-            let temp = value.list[i].main.temp
-            div.innerHTML = blockHtml(city, icon, date, meteo, humidity, temp)
+            let meteo = value.list[i].weather[0].main;
+            let humidity = value.list[i].main.humidity;
+            let temp = value.list[i].main.temp;
+            div.innerHTML = blockHtml(city, icon, date, meteo, humidity, temp);
         }
     })
     .catch(function(error){
@@ -104,14 +107,14 @@ const askMeteo = (city) => {
     })
 }
 
-//événement qui écoute le click du bouton afin de rechercher une ville
+//événement qui écoute le click du bouton adu formulaire fin de rechercher une ville
 btnSearchMeteo.addEventListener('click', (event) => {
     event.preventDefault();
     let removeBlockDisplayMeteo = document.querySelector("#displayMeteo");
     let removeError = document.querySelector("#error");
-    //On supprime le block displayMeteo afin d'effacer les résultats précédents
+    //On supprime le block displayMeteo et error afin d'effacer les résultats précédents
     removeError.remove();
     removeBlockDisplayMeteo.remove();
-    askMeteo(searchInput.value)
+    askMeteo(searchInput.value);
     event.stopPropagation();
 })

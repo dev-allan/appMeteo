@@ -35,3 +35,7 @@ h1{
     flex-direction: row;
     justify-content: space-between;
 }
+
+#error{
+    color : red;
+}
