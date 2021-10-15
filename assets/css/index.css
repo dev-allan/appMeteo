@@ -15,10 +15,15 @@ h1{
 
 #displayMeteo{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 0.25fr);
     grid-template-rows: repeat(5, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
+}
+
+/*Permet de sélectionner les 9 premiers résultats afin de mettre en valeur la météo des 27 prochaines heures*/
+:nth-child(odd) .card:nth-child(-n+9){
+    background-color:darksalmon;
 }
 
 .card{
