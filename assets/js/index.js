@@ -1,4 +1,5 @@
 //Récupération des éléments DOM
+let header = document.querySelector('header');
 let searchInput = document.querySelector("#inputSearch");
 let body = document.querySelector("body");
 
@@ -67,11 +68,21 @@ const blockHtml = (city, icon, date, meteo, humidity, temp) => {
 const askMeteo = (city) => {
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=7c029f5d78266d4521660999861fe8ad`)
     .then(function(response) {
+        console.log(response)
         if(response.ok) {
             return response.json();
+        } else if(response.status === 404){
+            let error = document.createElement('p');
+            error.setAttribute("id", "error");
+            header.appendChild(error);
+            error.innerHTML=`La ville de ${searchInput.value} n'existe pas`;
         }
     })
     .then(function(value){
+        let error = document.createElement('p');
+        error.setAttribute("id", "error");
+        header.appendChild(error);
+        error.innerHTML=``
         const displayR = document.createElement("section");
         displayR.setAttribute("id", "displayMeteo");
         body.appendChild(displayR);
@@ -97,7 +108,9 @@ const askMeteo = (city) => {
 btnSearchMeteo.addEventListener('click', (event) => {
     event.preventDefault();
     let removeBlockDisplayMeteo = document.querySelector("#displayMeteo");
+    let removeError = document.querySelector("#error");
     //On supprime le block displayMeteo afin d'effacer les résultats précédents
+    removeError.remove();
     removeBlockDisplayMeteo.remove();
     askMeteo(searchInput.value)
     event.stopPropagation();
