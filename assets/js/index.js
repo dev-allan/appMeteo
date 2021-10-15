@@ -1,7 +1,7 @@
 //Récupération des éléments DOM
+let body = document.querySelector("body");
 let header = document.querySelector('header');
 let searchInput = document.querySelector("#inputSearch");
-let body = document.querySelector("body");
 
 //Ajout de l'attribut value afin d'obtenir la valeur de l'input portant l'id #inputSerach
 searchInput.setAttribute("value", "");
